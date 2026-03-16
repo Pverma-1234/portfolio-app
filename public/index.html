@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<title>Portfolio Rebalance</title>
+
+<style>
+
+body{
+font-family: Arial;
+margin:40px;
+}
+
+table{
+border-collapse: collapse;
+width:80%;
+}
+
+th,td{
+border:1px solid #ddd;
+padding:8px;
+text-align:center;
+}
+
+th{
+background:#333;
+color:white;
+}
+
+.buy{
+color:green;
+font-weight:bold;
+}
+
+.sell{
+color:red;
+font-weight:bold;
+}
+
+.review{
+color:orange;
+font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+<nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+<div class="container-fluid">
+
+<a class="navbar-brand">Portfolio App</a>
+
+<div class="navbar-nav">
+
+<a class="nav-link" href="/">Dashboard</a>
+<a class="nav-link" href="/investments.html">Investments</a>
+<a class="nav-link" href="/history.html">History</a>
+<a class="nav-link" href="/edit.html">Edit Portfolio</a>
+
+</div>
+
+</div>
+</nav>
+
+<div class="container mt-4">
+
+<h2 class="mb-3">Amit Sharma Portfolio Rebalance</h2>
+
+<div class="alert alert-primary">
+Total Portfolio Value: <strong id="total"></strong>
+</div>
+
+<table class="table table-striped table-bordered">
+
+<thead class="table-dark">
+
+<tr>
+<th>Fund</th>
+<th>Current %</th>
+<th>Target %</th>
+<th>Drift</th>
+<th>Action</th>
+<th>Amount</th>
+</tr>
+
+</thead>
+
+<tbody id="table">
+
+</tbody>
+
+</table>
+
+</div>
+
+<script>
+
+fetch("/rebalance")
+.then(res=>res.json())
+.then(data=>{
+
+document.getElementById("total").innerText="₹"+data.total_portfolio
+
+let table=document.getElementById("table")
+
+data.rebalance.forEach(f=>{
+
+let actionText=""
+
+if(f.action==="BUY")
+actionText=`<span class="badge bg-success">BUY</span>`
+
+if(f.action==="SELL")
+actionText=`<span class="badge bg-danger">SELL</span>`
+
+if(f.action==="REVIEW")
+actionText=`<span class="badge bg-warning text-dark">REVIEW</span>`
+
+let row=`
+<tr>
+<td>${f.fund}</td>
+<td>${f.current_pct || "-"}</td>
+<td>${f.target_pct || "-"}</td>
+<td>${f.drift || "-"}</td>
+<td>${actionText}</td>
+<td>₹${f.amount}</td>
+</tr>
+`
+
+table.innerHTML+=row
+
+})
+
+})
+
+</script>
+
+</body>
+</html>

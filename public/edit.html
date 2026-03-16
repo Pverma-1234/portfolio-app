@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Edit Model Portfolio</title>
+
+<style>
+
+body{
+font-family: Arial;
+margin:40px;
+}
+
+nav{
+background:#333;
+padding:10px;
+margin-bottom:20px;
+}
+
+nav a{
+color:white;
+margin-right:15px;
+text-decoration:none;
+font-weight:bold;
+}
+
+table{
+border-collapse: collapse;
+width:60%;
+}
+
+th,td{
+border:1px solid #ddd;
+padding:8px;
+text-align:center;
+}
+
+th{
+background:#333;
+color:white;
+}
+
+input{
+width:60px;
+text-align:center;
+}
+
+button{
+margin-top:20px;
+padding:8px 15px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- Navigation Menu -->
+
+<nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+<div class="container-fluid">
+
+<a class="navbar-brand">Portfolio App</a>
+
+<div class="navbar-nav">
+
+<a class="nav-link" href="/">Dashboard</a>
+<a class="nav-link" href="/investments.html">Investments</a>
+<a class="nav-link" href="/history.html">History</a>
+<a class="nav-link" href="/edit.html">Edit Portfolio</a>
+
+</div>
+
+</div>
+</nav>
+
+<h2>Edit Model Portfolio</h2>
+
+<table id="table">
+
+<tr>
+<th>Fund</th>
+<th>Target %</th>
+</tr>
+
+</table>
+
+<button onclick="recalculate()">Recalculate</button>
+
+<script>
+
+fetch("/model")
+.then(res=>res.json())
+.then(data=>{
+
+let table=document.getElementById("table")
+
+data.forEach(f=>{
+
+table.innerHTML+=`
+<tr>
+<td>${f.fund_name}</td>
+<td><input value="${f.allocation_pct}"></td>
+</tr>
+`
+
+})
+
+})
+
+function recalculate(){
+alert("Recalculate logic can be added here")
+}
+
+</script>
+
+</body>
+</html>
